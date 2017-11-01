@@ -4499,8 +4499,6 @@ public abstract class Calendar implements Serializable, Cloneable, Comparable<Ca
      * @param date the date and time
      * @return true if the given date and time is part of the
      * weekend
-     * @see #getDayOfWeekType
-     * @see #getWeekendTransition
      * @see #isWeekend()
      */
     public boolean isWeekend(Date date) {
@@ -4513,8 +4511,6 @@ public abstract class Calendar implements Serializable, Cloneable, Comparable<Ca
      * this calendar system.
      * @return true if the given date and time is part of the
      * weekend
-     * @see #getDayOfWeekType
-     * @see #getWeekendTransition
      * @see #isWeekend(Date)
      */
     public boolean isWeekend() {
@@ -5475,6 +5471,9 @@ public abstract class Calendar implements Serializable, Cloneable, Comparable<Ca
      * value from 0 to 23:59:59.999 inclusive, unless fields are out of
      * range, in which case it can be an arbitrary value.  This value
      * reflects local zone wall time.
+     * @deprecated This method suffers from a potential integer overflow and may be removed or
+     *     changed in a future release. See <a href="http://bugs.icu-project.org/trac/ticket/11632">
+     *     ICU ticket #11632</a> for details.
      */
     protected int computeMillisInDay() {
         // Do the time portion of the conversion.
@@ -5520,6 +5519,9 @@ public abstract class Calendar implements Serializable, Cloneable, Comparable<Ca
      * @param millisInDay milliseconds of the time fields; may be out
      * or range.
      * @return total zone offset (raw + DST) for the given moment
+     * @deprecated This method suffers from a potential integer overflow and may be removed or
+     *     changed in a future release. See <a href="http://bugs.icu-project.org/trac/ticket/11632">
+     *     ICU ticket #11632</a> for details.
      */
     protected int computeZoneOffset(long millis, int millisInDay) {
         int[] offsets = new int[2];

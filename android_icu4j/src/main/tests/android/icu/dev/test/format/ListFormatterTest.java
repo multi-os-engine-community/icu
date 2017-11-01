@@ -17,7 +17,9 @@ import org.junit.Test;
 import android.icu.dev.test.TestFmwk;
 import android.icu.text.ListFormatter;
 import android.icu.util.ULocale;
+import android.icu.testsharding.MainTestShard;
 
+@MainTestShard
 public class ListFormatterTest extends TestFmwk {
     String[] HardcodedTestData = {
             "",
@@ -52,6 +54,40 @@ public class ListFormatterTest extends TestFmwk {
         if (isDefaultLocaleEnglishLike()) {
             checkData(ListFormatter.getInstance(), EnglishTestData);
         }
+    }
+
+    // Tests resource loading and inheritance when region sublocale
+    // has only partial data for the listPattern element (overriding
+    // some of the parent data). #12994
+    String[] EnglishGBTestData = {
+            "",
+            "A",
+            "A and B",
+            "A, B and C",
+            "A, B, C and D",
+            "A, B, C, D and E"
+    };
+
+    @Test
+    public void TestEnglishGB() {
+        checkData(ListFormatter.getInstance(new ULocale("en_GB")), EnglishGBTestData);
+    }
+
+    // Tests resource loading and inheritance when region sublocale
+    // has only partial data for the listPattern element (overriding
+    // some of the parent data). #12994
+    String[] ChineseTradHKTestData = {
+            "",
+            "A",
+            "A\u53CAB",
+            "A\u3001B\u53CAC",
+            "A\u3001B\u3001C\u53CAD",
+            "A\u3001B\u3001C\u3001D\u53CAE"
+    };
+
+    @Test
+    public void TestChineseTradHK() {
+        checkData(ListFormatter.getInstance(new ULocale("zh_Hant_HK")), ChineseTradHKTestData);
     }
 
     String[] JapaneseTestData = {

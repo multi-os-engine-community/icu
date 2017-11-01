@@ -15,23 +15,21 @@ import org.junit.Test;
 
 import android.icu.dev.test.TestFmwk;
 import android.icu.text.Transliterator;
+import android.icu.testsharding.MainTestShard;
 
 // Test for ICU Ticket #7201.  With threading bugs in RuleBasedTransliterator, this
 //   test would reliably crash.
 
+@MainTestShard
 public class ThreadTest extends TestFmwk {
     private ArrayList<Worker> threads = new ArrayList<Worker>();
-    // Android patch: Halved the execution time of ThreadTest#TestThreads.
     private int iterationCount = 50000;
-    // Android patch end.
     
     @Test
     public void TestThreads()  {
         if (TestFmwk.getExhaustiveness() >= 9) {
             // Exhaustive test.  Run longer.
-            // Android patch: Halved the execution time of ThreadTest#TestThreads.
-            iterationCount = 500000;
-            // Android patch end.
+            iterationCount = 1000000;
         }
         
         for (int i = 0; i < 8; i++) {

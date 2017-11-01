@@ -75,9 +75,8 @@ ALL_TEST_INPUT_DIRS="${TEST_INPUT_DIRS} ${TESTDATA_DIR}"
 ${SRCGEN_JAVA_BINARY} ${SRCGEN_JAVA_ARGS} -cp ${CLASSPATH} com.android.icu4j.srcgen.Icu4jTestsTransform \
   ${ALL_TEST_INPUT_DIRS} ${TEST_DEST_DIR}
 
-# Bug work-around (b/33448125), CTS does not cope with DigitListTest accessing
-# a non-public class.
-rm -f ${TEST_DEST_DIR}/android/icu/text/DigitListTest.java
+# Apply line-based javadoc patches
+${ANDROID_BUILD_TOP}/external/icu/tools/srcgen/javadoc_patches/apply_patches.sh
 
 # Copy the data files.
 echo Copying test data

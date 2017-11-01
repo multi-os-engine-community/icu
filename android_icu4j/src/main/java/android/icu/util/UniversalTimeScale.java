@@ -49,8 +49,6 @@ import android.icu.math.BigDecimal;
  * <p>For more details and background, see the
  * <a href="http://www.icu-project.org/userguide/universalTimeScale.html">Universal Time Scale</a>
  * chapter in the ICU User Guide.
- *
- * @hide Only a subset of ICU is exposed in Android
  */
 
 public final class UniversalTimeScale
@@ -118,7 +116,10 @@ public final class UniversalTimeScale
     
     /**
      * This is the first unused time scale value.
+     *
+     * @deprecated ICU 59
      */
+    @Deprecated
     public static final int MAX_SCALE = 10;
     
     /**

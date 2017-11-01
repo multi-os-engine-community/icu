@@ -19,12 +19,6 @@
 cc_defaults {
     name: "libicui18n_defaults",
     srcs: [
-        "decContext.c",
-        "decNumber.c",
-        "ucln_in.cpp",
-        "ulocdata.c",
-        "utmscale.c",
-
         "affixpatternparser.cpp",
         "alphaindex.cpp",
         "anytrans.cpp",
@@ -78,10 +72,12 @@ cc_defaults {
         "datefmt.cpp",
         "dayperiodrules.cpp",
         "dcfmtsym.cpp",
+        "decContext.cpp",
         "decfmtst.cpp",
         "decimalformatpattern.cpp",
         "decimfmt.cpp",
         "decimfmtimpl.cpp",
+        "decNumber.cpp",
         "digitaffix.cpp",
         "digitaffixesandpadding.cpp",
         "digitformatter.cpp",
@@ -179,6 +175,7 @@ cc_defaults {
         "tzrule.cpp",
         "tztrans.cpp",
         "ucal.cpp",
+        "ucln_in.cpp",
         "ucol.cpp",
         "ucoleitr.cpp",
         "ucol_res.cpp",
@@ -189,13 +186,16 @@ cc_defaults {
         "udatpg.cpp",
         "ufieldpositer.cpp",
         "uitercollationiterator.cpp",
+        "ulocdata.cpp",
         "umsg.cpp",
         "unesctrn.cpp",
         "uni2name.cpp",
         "unum.cpp",
+        "unumsys.cpp",
         "upluralrules.cpp",
         "uregexc.cpp",
         "uregex.cpp",
+        "uregion.cpp",
         "usearch.cpp",
         "uspoof_build.cpp",
         "uspoof_conf.cpp",
@@ -203,6 +203,7 @@ cc_defaults {
         "uspoof_impl.cpp",
         "utf16collationiterator.cpp",
         "utf8collationiterator.cpp",
+        "utmscale.cpp",
         "utrans.cpp",
         "valueformatter.cpp",
         "windtfmt.cpp",
@@ -220,9 +221,13 @@ cc_defaults {
         "-DU_I18N_IMPLEMENTATION",
         "-O3",
         "-fvisibility=hidden",
+        "-Wall",
+        "-Werror",
         "-Wno-unused-parameter",
     ],
-    clang: true,
+    cppflags: [
+        "-std=c++11",
+    ],
     rtti: true,
     export_include_dirs: ["."],
 
@@ -245,21 +250,4 @@ cc_library_shared {
     host_supported: true,
     unique_host_soname: true,
     shared_libs: ["libicuuc"],
-    host_ldlibs: [
-        "-lm",
-        "-lpthread",
-    ],
-}
-
-//
-// Build as a static library against the NDK
-//
-cc_library_static {
-    name: "libicui18n_static",
-    defaults: ["libicui18n_defaults"],
-    sdk_version: "9",
-    stl: "stlport_static",
-    static_libs: ["libicuuc_static"],
-
-    cflags: ["-Os"], // Using -Os over -O3 actually cuts down the final executable size by a few dozen kilobytes
 }

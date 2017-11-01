@@ -40,7 +40,9 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.text.UFormat;
 import android.icu.util.TimeZone;
 import android.icu.util.ULocale;
+import android.icu.testsharding.MainTestShard;
 
+@MainTestShard
 public class TestMessageFormat extends android.icu.dev.test.TestFmwk {
     @Test
     public void TestBug3()
@@ -884,8 +886,9 @@ public class TestMessageFormat extends android.icu.dev.test.TestFmwk {
                             errln("parsed argument " + parsedArgs[0] + " != " + num);
                         }
                     }
-                    catch (Exception e) {
-                        errln("parse of '" + result + " returned exception: " + e.getMessage());
+                    catch (ParseException e) {
+                        errln("parse of '" + result + "' returned exception: "
+                                + e.getMessage() + " " + e.getErrorOffset());
                     }
                 }
             }
