@@ -144,7 +144,6 @@ public final class VersionInfo implements Comparable<VersionInfo>
 
     /**
      * Unicode 10.0 version
-     * @hide unsupported on Android
      */
     public static final VersionInfo UNICODE_10_0;
 
@@ -528,8 +527,8 @@ public final class VersionInfo implements Comparable<VersionInfo>
         UNICODE_9_0   = getInstance(9, 0, 0, 0);
         UNICODE_10_0   = getInstance(10, 0, 0, 0);
 
-        ICU_VERSION   = getInstance(60, 1, 0, 0);
-        ICU_DATA_VERSION = getInstance(60, 1, 0, 0);
+        ICU_VERSION   = getInstance(60, 2, 0, 0);
+        ICU_DATA_VERSION = getInstance(60, 2, 0, 0);
         UNICODE_VERSION = UNICODE_10_0;
 
         UCOL_RUNTIME_VERSION = getInstance(9);
