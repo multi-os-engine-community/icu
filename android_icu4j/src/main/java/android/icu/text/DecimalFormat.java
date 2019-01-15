@@ -38,12 +38,6 @@ import android.icu.util.ULocale.Category;
 /**
  * <strong>[icu enhancement]</strong> ICU's replacement for {@link java.text.DecimalFormat}.&nbsp;Methods, fields, and other functionality specific to ICU are labeled '<strong>[icu]</strong>'.
  *
- * <p>
- * <strong>IMPORTANT:</strong> New users are strongly encouraged to see if
- * {@link NumberFormatter} fits their use case.  Although not deprecated, this
- * class, DecimalFormat, is only provided for java.text.DecimalFormat compatibility.
- * <hr>
- *
  * <code>DecimalFormat</code> is the primary
  * concrete subclass of {@link NumberFormat}. It has a variety of features designed to make it
  * possible to parse and format numbers in any locale, including support for Western, Arabic, or
@@ -1076,6 +1070,8 @@ public class DecimalFormat extends NumberFormat {
    *
    * @param multiplier The number by which all numbers passed to {@link #format} will be multiplied.
    * @throws IllegalArgumentException If the given multiplier is zero.
+   * @throws ArithmeticException when inverting multiplier produces a non-terminating decimal result
+   *         in conjunction with MathContext of unlimited precision.
    */
   public synchronized void setMultiplier(int multiplier) {
     if (multiplier == 0) {
@@ -1233,6 +1229,8 @@ public class DecimalFormat extends NumberFormat {
    * method.
    *
    * @param mathContext The MathContext to use when rounding numbers.
+   * @throws ArithmeticException when inverting multiplier produces a non-terminating decimal result
+   *         in conjunction with MathContext of unlimited precision.
    * @see java.math.MathContext
    */
   public synchronized void setMathContext(java.math.MathContext mathContext) {
@@ -1263,6 +1261,8 @@ public class DecimalFormat extends NumberFormat {
    * {@link android.icu.math.MathContext}.
    *
    * @param mathContextICU The MathContext to use when rounding numbers.
+   * @throws ArithmeticException when inverting multiplier produces a non-terminating decimal result
+   *         in conjunction with MathContext of unlimited precision.
    * @see #setMathContext(java.math.MathContext)
    */
   public synchronized void setMathContextICU(MathContext mathContextICU) {
@@ -1465,14 +1465,22 @@ public class DecimalFormat extends NumberFormat {
    * @param useSignificantDigits true to enable significant digit rounding; false to disable it.
    */
   public synchronized void setSignificantDigitsUsed(boolean useSignificantDigits) {
+    int oldMinSig = properties.getMinimumSignificantDigits();
+    int oldMaxSig = properties.getMaximumSignificantDigits();
+    // These are the default values from the old implementation.
     if (useSignificantDigits) {
-      // These are the default values from the old implementation.
-      properties.setMinimumSignificantDigits(1);
-      properties.setMaximumSignificantDigits(6);
+      if (oldMinSig != -1 || oldMaxSig != -1) {
+        return;
+      }
     } else {
-      properties.setMinimumSignificantDigits(-1);
-      properties.setMaximumSignificantDigits(-1);
+      if (oldMinSig == -1 && oldMaxSig == -1) {
+        return;
+      }
     }
+    int minSig = useSignificantDigits ? 1 : -1;
+    int maxSig = useSignificantDigits ? 6 : -1;
+    properties.setMinimumSignificantDigits(minSig);
+    properties.setMaximumSignificantDigits(maxSig);
     refreshFormatter();
   }
 
@@ -1733,9 +1741,6 @@ public class DecimalFormat extends NumberFormat {
    *
    * <p>For example, if grouping is enabled, 12345 will be printed as "12,345" in <em>en-US</em>. If
    * grouping were disabled, it would instead be printed as simply "12345".
-   *
-   * <p>Calling <code>df.setGroupingUsed(true)</code> is functionally equivalent to setting grouping
-   * size to 3, as in <code>df.setGroupingSize(3)</code>.
    *
    * @param enabled true to enable grouping separators; false to disable them.
    * @see #setGroupingSize
@@ -2405,6 +2410,7 @@ public class DecimalFormat extends NumberFormat {
 
   /**
    * @deprecated This API is ICU internal only.
+ * @hide Only a subset of ICU is exposed in Android
  * @hide draft / provisional / internal are hidden on Android
    */
   @Deprecated

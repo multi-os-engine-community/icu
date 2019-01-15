@@ -31,6 +31,9 @@ import android.icu.util.UResourceBundleIterator;
  */
 public class KeyTypeData {
 
+    /**
+     * @hide Only a subset of ICU is exposed in Android
+     */
     public enum ValueType {
         single, multiple, incremental, any
     }
@@ -212,13 +215,6 @@ public class KeyTypeData {
     }
 
     private static void initFromResourceBundle() {
-        // Android patch: Avoid inter-dependency issue on ULocale.getDefault(). Ticket#13776
-        /*
-        UResourceBundle keyTypeDataRes = UResourceBundle.getBundleInstance(
-                ICUData.ICU_BASE_NAME,
-                "keyTypeData",
-                ICUResourceBundle.ICU_DATA_CLASS_LOADER);
-         */
         UResourceBundle keyTypeDataRes = ICUResourceBundle.getBundleInstance(
                 ICUData.ICU_BASE_NAME,
                 "keyTypeData",

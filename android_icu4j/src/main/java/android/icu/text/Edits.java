@@ -49,13 +49,10 @@ import java.util.Arrays;
  * <p>
  * The "fine changes" and "coarse changes" iterators will step through only the change edits when their
  * {@link Edits.Iterator#next()} methods are called. They are identical to the non-change iterators when
- * their {@link Edits.Iterator#findSourceIndex(int)} or {@link Edits.Iterator#findDestinationIndex(int)}
- * methods are used to walk through the string.
+ * their {@link Edits.Iterator#findSourceIndex(int)} method is used to walk through the string.
  * <p>
  * For examples of how to use this class, see the test <code>TestCaseMapEditsIteratorDocs</code> in
  * UCharacterCaseTest.java.
- *
- * @hide Only a subset of ICU is exposed in Android
  */
 public final class Edits {
     // 0000uuuuuuuuuuuu records u+1 unchanged text units.
@@ -242,7 +239,6 @@ public final class Edits {
 
     /**
      * @return the number of change edits
-     * @hide draft / provisional / internal are hidden on Android
      */
     public int numberOfChanges() { return numChanges; }
 
@@ -254,8 +250,8 @@ public final class Edits {
      * starts at {@link #sourceIndex()} and runs for {@link #oldLength()} chars; the destination string
      * span starts at {@link #destinationIndex()} and runs for {@link #newLength()} chars.
      * <p>
-     * The iterator can be moved between edits using the {@link #next()}, {@link #findSourceIndex(int)},
-     * and {@link #findDestinationIndex(int)} methods. Calling any of these methods mutates the iterator
+     * The iterator can be moved between edits using the {@link #next()} and
+     * {@link #findSourceIndex(int)} methods. Calling any of these methods mutates the iterator
      * to make it point to the corresponding edit.
      * <p>
      * For more information, see the documentation for {@link Edits}.
@@ -571,7 +567,6 @@ public final class Edits {
          *
          * @param i destination index
          * @return true if the edit for the destination index was found
-         * @hide draft / provisional / internal are hidden on Android
          */
         public boolean findDestinationIndex(int i) {
             return findIndex(i, false) == 0;
@@ -681,7 +676,6 @@ public final class Edits {
          *
          * @param i source index
          * @return destination index; undefined if i is not 0..string length
-         * @hide draft / provisional / internal are hidden on Android
          */
         public int destinationIndexFromSourceIndex(int i) {
             int where = findIndex(i, true);
@@ -719,7 +713,6 @@ public final class Edits {
          *
          * @param i destination index
          * @return source index; undefined if i is not 0..string length
-         * @hide draft / provisional / internal are hidden on Android
          */
         public int sourceIndexFromDestinationIndex(int i) {
             int where = findIndex(i, false);
@@ -802,11 +795,9 @@ public final class Edits {
 
         /**
          * A string representation of the current edit represented by the iterator for debugging. You
-         * should not depend on the contents of the return string.
-         * @deprecated This API is ICU internal only.
-         * @hide draft / provisional / internal are hidden on Android
+         * should not depend on the contents of the return string; it may change over time.
+         * @return a string representation of the object.
          */
-        @Deprecated
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -901,7 +892,6 @@ public final class Edits {
      * @param bc reflects how substrings of intermediate string b
      *     map to substrings of output string c.
      * @return this, with the merged edits appended
-     * @hide draft / provisional / internal are hidden on Android
      */
     public Edits mergeAndAppend(Edits ab, Edits bc) {
         // Picture string a --(Edits ab)--> string b --(Edits bc)--> string c.

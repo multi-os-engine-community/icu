@@ -57,12 +57,6 @@ import android.icu.util.UResourceBundle;
  * A formatter for Measure objects.
  *
  * <p>
- * <strong>IMPORTANT:</strong> New users are strongly encouraged to see if
- * {@link NumberFormatter} fits their use case.  Although not deprecated, this
- * class, MeasureFormat, is provided for backwards compatibility only.
- * <hr>
- *
- * <p>
  * To format a Measure object, first create a formatter object using a MeasureFormat factory method. Then
  * use that object's format or formatMeasures methods.
  *
@@ -126,9 +120,9 @@ public class MeasureFormat extends UFormat {
 
     private final transient LocalizedNumberFormatter numberFormatter;
 
-    private static final SimpleCache<ULocale, NumericFormatters> localeToNumericDurationFormatters = new SimpleCache<ULocale, NumericFormatters>();
+    private static final SimpleCache<ULocale, NumericFormatters> localeToNumericDurationFormatters = new SimpleCache<>();
 
-    private static final Map<MeasureUnit, Integer> hmsTo012 = new HashMap<MeasureUnit, Integer>();
+    private static final Map<MeasureUnit, Integer> hmsTo012 = new HashMap<>();
 
     static {
         hmsTo012.put(MeasureUnit.HOUR, 0);
@@ -492,6 +486,9 @@ public class MeasureFormat extends UFormat {
      * Get the format width this instance is using.
      */
     public MeasureFormat.FormatWidth getWidth() {
+        if (formatWidth == MeasureFormat.FormatWidth.DEFAULT_CURRENCY) {
+            return MeasureFormat.FormatWidth.WIDE;
+        }
         return formatWidth;
     }
 
@@ -962,7 +959,7 @@ public class MeasureFormat extends UFormat {
             this.formatWidth = width;
             this.numberFormat = numberFormat;
             this.subClass = subClass;
-            this.keyValues = new HashMap<Object, Object>();
+            this.keyValues = new HashMap<>();
         }
 
         // Must have public constructor, to enable Externalizable
@@ -1035,7 +1032,7 @@ public class MeasureFormat extends UFormat {
         return values[ordinal];
     }
 
-    private static final Map<ULocale, String> localeIdToRangeFormat = new ConcurrentHashMap<ULocale, String>();
+    private static final Map<ULocale, String> localeIdToRangeFormat = new ConcurrentHashMap<>();
 
     /**
      * Return a formatter (compiled SimpleFormatter pattern) for a range, such as "{0}–{1}".
